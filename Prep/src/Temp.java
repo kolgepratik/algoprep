@@ -9,10 +9,12 @@ import java.util.Scanner;
 
 public class Temp {
 
-	static int[] array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	static int[] array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+			14, 15, 16 };
 	static int[] bitarray = new int[array.length + 1];
 
 	// Testing Git.
+	// Testing done.
 	public static boolean isValid(String s) {
 		Map<Character, Character> pairs = new HashMap<Character, Character>();
 		pairs.put('(', ')');
@@ -83,7 +85,8 @@ public class Temp {
 
 	public static int getPascalVal(int rowNumber, int colNumber) {
 		BigInteger val = (getFactorial(rowNumber)
-				.divide(getFactorial(colNumber).multiply(getFactorial(rowNumber - colNumber))));
+				.divide(getFactorial(colNumber).multiply(
+						getFactorial(rowNumber - colNumber))));
 
 		return val.intValue();
 	}
@@ -92,7 +95,8 @@ public class Temp {
 		if (number == 0 || number == 1) {
 			return new BigInteger(1 + "");
 		} else {
-			return new BigInteger(number + "").multiply(getFactorial(number - 1));
+			return new BigInteger(number + "")
+					.multiply(getFactorial(number - 1));
 		}
 	}
 
