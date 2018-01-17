@@ -1,3 +1,4 @@
+package misc;
 public class NumbersMain {
 
 	private static NumbersMain getInstance() {
