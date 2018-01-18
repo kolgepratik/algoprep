@@ -3,7 +3,7 @@
  */
 package graphsandtrees;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +17,13 @@ public class BinaryTreeMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		List<Integer> l = new ArrayList<Integer>();
+		l.add(2);
+		l.add(3);
+
+		System.out.println("List : " + l);
+		System.out.println("Sublist: " + l.subList(0, 0));
+
 		BinaryTreeMain binaryTreeMain = new BinaryTreeMain();
 		TreeTraversal treeTraversal = new TreeTraversal();
 
@@ -38,8 +45,10 @@ public class BinaryTreeMain {
 		System.out.println("\nLCA is : "
 				+ binaryTreeMain.findLCA(tree.root, new TreeNode<Integer>(4), new TreeNode<Integer>(8)).key);
 
-		List<Integer> inorder = Arrays.asList(new Integer[] { 4, 2, 5, 1, 6, 3, 7 });
-		List<Integer> preorder = Arrays.asList(new Integer[] { 1, 2, 4, 5, 3, 6, 7 });
+		List<Integer> inorder = null;
+		// new ArrayList(Arrays.asList(new Integer[] { 4, 2, 5, 1, 6, 3, 7 }));
+		List<Integer> preorder = null;
+		// new ArrayList(Arrays.asList(new Integer[] { 1, 2, 4, 5, 3, 6, 7 }));
 
 		System.out.println("\nConstructed Tree: ");
 		TreeNode<Integer> root = binaryTreeMain.buildBinaryTreeFromInAndPreorderTraversal(null, preorder, inorder);
@@ -164,34 +173,51 @@ public class BinaryTreeMain {
 		}
 	}
 
+	/**
+	 * Build a Binary Tree using Inorder and Preorder Traversal.
+	 * 
+	 * @param root
+	 * @param preorderTraversal
+	 * @param inorderTraversal
+	 * @return
+	 */
 	TreeNode<Integer> buildBinaryTreeFromInAndPreorderTraversal(TreeNode<Integer> root, List<Integer> preorderTraversal,
 			List<Integer> inorderTraversal) {
 
-		if (inorderTraversal.isEmpty() || preorderTraversal.isEmpty()) {
+		if (inorderTraversal == null || inorderTraversal.isEmpty() || preorderTraversal == null
+				|| preorderTraversal.isEmpty()) {
 			System.out.print("Empty\n");
+			System.out.println("Pre : " + preorderTraversal);
+			System.out.println("In : " + inorderTraversal);
+
 			return null;
-		}
+		} else {
+			Integer key = preorderTraversal.get(0);
 
-		Integer key = preorderTraversal.get(0);
+			System.out.println("Pre : " + preorderTraversal);
+			System.out.println("In : " + inorderTraversal);
+			System.out.println("Creating : " + key);
 
-		System.out.println("Made : " + key);
-		System.out.println("Pre : " + preorderTraversal);
-		System.out.println("In : " + inorderTraversal);
-
-		if (root == null) {
+			// Create the Node.
 			root = new TreeNode<Integer>(key);
-			preorderTraversal = preorderTraversal.subList(1, preorderTraversal.size());
+
+			// Node created. Move to the next node.
+			preorderTraversal.remove(0);
+
+			// Find left and right sublists.
+			List<Integer> leftList = inorderTraversal.subList(0, inorderTraversal.indexOf(key));
+			List<Integer> rightList = inorderTraversal.subList(inorderTraversal.indexOf(key) + 1,
+					inorderTraversal.size());
+
+			// Create left subtree.
+			System.out.println("\nGoing left");
+			root.left = buildBinaryTreeFromInAndPreorderTraversal(root.left, preorderTraversal, leftList);
+
+			// Create right subtree.
+			System.out.println("\nGoing right");
+			root.right = buildBinaryTreeFromInAndPreorderTraversal(root.right, preorderTraversal, rightList);
+
+			return root;
 		}
-
-		inorderTraversal = inorderTraversal.subList(0, inorderTraversal.indexOf(key));
-
-		System.out.println("\nGoing left");
-		root.left = buildBinaryTreeFromInAndPreorderTraversal(root.left, preorderTraversal, inorderTraversal);
-
-		inorderTraversal = inorderTraversal.subList(inorderTraversal.indexOf(key) + 1, inorderTraversal.size());
-		System.out.println("\nGoing right");
-		root.right = buildBinaryTreeFromInAndPreorderTraversal(root.right, preorderTraversal, inorderTraversal);
-
-		return root;
 	}
 }

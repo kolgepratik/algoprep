@@ -18,4 +18,9 @@ public class TreeNode<T> {
 	boolean right() {
 		return (this.right != null);
 	}
+
+	@Override
+	public String toString() {
+		return "TreeNode [key=" + key + "]";
+	}
 }
