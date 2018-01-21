@@ -1,14 +1,16 @@
-package graphsandtrees;
+package graphsandtrees.trees.btree;
 
-public class BinaryTree<T> {
-	TreeNode<T> root;
+import graphsandtrees.trees.TreeNode;
 
-	public BinaryTree() {
+public class BTree<T> {
+	public TreeNode<T> root;
+
+	public BTree() {
 		super();
 	}
 
-	public static BinaryTree<Integer> getSampleIntegerBinaryTree() {
-		BinaryTree<Integer> tree = new BinaryTree<Integer>();
+	public static BTree<Integer> getSampleIntegerBinaryTree() {
+		BTree<Integer> tree = new BTree<Integer>();
 
 		tree.root = new TreeNode(1);
 		tree.root.left = new TreeNode(2);

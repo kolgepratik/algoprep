@@ -1,21 +1,21 @@
-package graphsandtrees;
+package graphsandtrees.trees;
 
 public class TreeNode<T> {
-	T key;
+	public T key;
 
-	TreeNode<T> left;
-	TreeNode<T> right;
+	public TreeNode<T> left;
+	public TreeNode<T> right;
 
 	public TreeNode(T key) {
 		super();
 		this.key = key;
 	}
 
-	boolean left() {
+	public boolean left() {
 		return (this.left != null);
 	}
 
-	boolean right() {
+	public boolean right() {
 		return (this.right != null);
 	}
 

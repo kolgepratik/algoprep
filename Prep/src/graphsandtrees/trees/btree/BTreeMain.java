@@ -1,57 +1,56 @@
 /**
  * 
  */
-package graphsandtrees;
+package graphsandtrees.trees.btree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import graphsandtrees.trees.TreeNode;
+import graphsandtrees.trees.TreeTraversal;
 
 /**
  * @author kolge
  *
  */
-public class BinaryTreeMain {
+public class BTreeMain {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		List<Integer> l = new ArrayList<Integer>();
-		l.add(2);
-		l.add(3);
-
-		System.out.println("List : " + l);
-		System.out.println("Sublist: " + l.subList(0, 0));
-
-		BinaryTreeMain binaryTreeMain = new BinaryTreeMain();
+		BTreeMain bTreeMain = new BTreeMain();
 		TreeTraversal treeTraversal = new TreeTraversal();
 
-		BinaryTree<Integer> tree = BinaryTree.getSampleIntegerBinaryTree();
+		BTree<Integer> tree = BTree.getSampleIntegerBinaryTree();
 
-		// System.out.println("Number of leaf nodes in Tree : " +
-		// binaryTreeMain.countLeaves(tree));
+		// countLeaves ()
+		System.out.println("Number of leaf nodes in Tree : " + bTreeMain.countLeaves(tree));
 
-		// System.out.println("All Paths from root to leaves : ");
-		// binaryTreeMain.printAllRootToLeavesPaths(tree);
+		// printAllRootToLeavesPaths ()
+		System.out.println("All Paths from root to leaves : ");
+		bTreeMain.printAllRootToLeavesPaths(tree);
 
+		// printLevelOrderTraversal ()
 		System.out.println("\nInitial Tree : ");
 		treeTraversal.printLevelOrderTraversal(tree.root);
 
+		// mirror ()
 		System.out.println("\nMirrored Tree : ");
-		TreeNode<Integer> mirrorTree = binaryTreeMain.mirror(tree.root);
+		TreeNode<Integer> mirrorTree = bTreeMain.mirror(tree.root);
 		treeTraversal.printLevelOrderTraversal(mirrorTree);
 
-		System.out.println("\nLCA is : "
-				+ binaryTreeMain.findLCA(tree.root, new TreeNode<Integer>(4), new TreeNode<Integer>(8)).key);
+		// findLCA ()
+		System.out.println(
+				"\nLCA is : " + bTreeMain.findLCA(tree.root, new TreeNode<Integer>(4), new TreeNode<Integer>(8)).key);
 
-		List<Integer> inorder = null;
-		// new ArrayList(Arrays.asList(new Integer[] { 4, 2, 5, 1, 6, 3, 7 }));
-		List<Integer> preorder = null;
-		// new ArrayList(Arrays.asList(new Integer[] { 1, 2, 4, 5, 3, 6, 7 }));
-
+		// buildBinaryTreeFromInAndPreorderTraversal ()
+		List<Integer> inorder = new ArrayList(Arrays.asList(new Integer[] { 4, 2, 5, 1, 6, 3, 7 }));
+		List<Integer> preorder = new ArrayList(Arrays.asList(new Integer[] { 1, 2, 4, 5, 3, 6, 7 }));
 		System.out.println("\nConstructed Tree: ");
-		TreeNode<Integer> root = binaryTreeMain.buildBinaryTreeFromInAndPreorderTraversal(null, preorder, inorder);
+		TreeNode<Integer> root = bTreeMain.buildBinaryTreeFromInAndPreorderTraversal(null, preorder, inorder);
 		treeTraversal.printLevelOrderTraversal(root);
 	}
 
@@ -61,7 +60,7 @@ public class BinaryTreeMain {
 	 * @param btree
 	 * @return
 	 */
-	int countLeaves(BinaryTree<Integer> btree) {
+	int countLeaves(BTree<Integer> btree) {
 		int leafCount = 0;
 
 		LinkedList<TreeNode> q = new LinkedList<TreeNode>();
@@ -92,7 +91,7 @@ public class BinaryTreeMain {
 	 * 
 	 * @param btree
 	 */
-	void printAllRootToLeavesPaths(BinaryTree<Integer> btree) {
+	void printAllRootToLeavesPaths(BTree<Integer> btree) {
 		LinkedList<TreeNode<Integer>> q = new LinkedList<TreeNode<Integer>>();
 
 		TreeNode<Integer> root = btree.root;

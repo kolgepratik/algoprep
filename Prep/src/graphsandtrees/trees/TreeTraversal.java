@@ -1,5 +1,6 @@
-package graphsandtrees;
+package graphsandtrees.trees;
 
+import graphsandtrees.trees.btree.BTree;
 import stacksandqueues.GenericQueue;
 
 public class TreeTraversal {
@@ -94,13 +95,7 @@ public class TreeTraversal {
 	public static void main(String[] args) {
 		TreeTraversal tv = new TreeTraversal();
 
-		BinaryTree<Integer> tree = new BinaryTree<Integer>();
-		tree.root = new TreeNode(1);
-		tree.root.left = new TreeNode(2);
-		tree.root.right = new TreeNode(3);
-		tree.root.left.left = new TreeNode(4);
-		tree.root.left.right = new TreeNode(5);
-		tree.root.left.right.right = new TreeNode(6);
+		BTree<Integer> tree = BTree.getSampleIntegerBinaryTree();
 
 		System.out.println("\nPreorder traversal of binary tree is \n");
 		tv.printPreorderTraversal(tree.root);
