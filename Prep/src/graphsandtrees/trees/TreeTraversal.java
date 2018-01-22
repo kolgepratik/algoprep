@@ -1,5 +1,7 @@
 package graphsandtrees.trees;
 
+import java.util.LinkedList;
+
 import graphsandtrees.trees.btree.BTree;
 import stacksandqueues.GenericQueue;
 
@@ -90,6 +92,57 @@ public class TreeTraversal {
 			}
 		}
 
+	}
+
+	/**
+	 * Zig-zag tree traversal.
+	 * 
+	 * @param root
+	 */
+	public void zigzagTraversal(TreeNode<Integer> root) {
+		LinkedList<TreeNode<Integer>> currentStack = new LinkedList<TreeNode<Integer>>();
+		LinkedList<TreeNode<Integer>> nextStack = null;
+
+		boolean left = false;
+
+		if (root == null) {
+			System.err.println("Tree is empty.");
+		} else {
+			currentStack.add(root);
+
+			do {
+				nextStack = new LinkedList<TreeNode<Integer>>();
+				while (!currentStack.isEmpty()) {
+					TreeNode<Integer> currentNode = currentStack.removeLast();
+
+					System.out.print(" " + currentNode.key + " ");
+
+					if (left) {
+						if (currentNode.left()) {
+							nextStack.add(currentNode.left);
+						}
+
+						if (currentNode.right()) {
+							nextStack.add(currentNode.right);
+						}
+					} else {
+						if (currentNode.right()) {
+							nextStack.add(currentNode.right);
+						}
+
+						if (currentNode.left()) {
+							nextStack.add(currentNode.left);
+						}
+					}
+				}
+
+				// currentStack is exhausted. Move to the next lvl.
+				if (!nextStack.isEmpty()) {
+					currentStack = nextStack;
+					left = !left;
+				}
+			} while (!nextStack.isEmpty());
+		}
 	}
 
 	public static void main(String[] args) {
