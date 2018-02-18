@@ -1,4 +1,4 @@
-package graphsandtrees.trees;
+package trees;
 
 public class TreeNode<T> implements Comparable<T> {
 	public T key;
@@ -6,9 +6,12 @@ public class TreeNode<T> implements Comparable<T> {
 	public TreeNode<T> left;
 	public TreeNode<T> right;
 
+	public Integer height;
+
 	public TreeNode(T key) {
 		super();
 		this.key = key;
+		this.height = 0;
 	}
 
 	public boolean left() {
@@ -21,7 +24,7 @@ public class TreeNode<T> implements Comparable<T> {
 
 	@Override
 	public String toString() {
-		return "TreeNode [key=" + key + "]";
+		return "TreeNode [key=" + key + ", height=" + height + "]";
 	}
 
 	public boolean greaterThan(T obj) {

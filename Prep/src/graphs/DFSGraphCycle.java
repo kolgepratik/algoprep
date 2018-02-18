@@ -1,7 +1,7 @@
 /**
  * 
  */
-package graphsandtrees;
+package graphs;
 
 import java.util.Iterator;
 
@@ -9,8 +9,8 @@ public class DFSGraphCycle {
 
 	public void dfsCycle(Graph graph, int startVertex) {
 		// By default no vertices are visited
-		boolean visitedVertices[] = new boolean[graph.getNumberOfVertices()];
-		boolean stackVertices[] = new boolean[graph.getNumberOfVertices()];
+		boolean visitedVertices[] = new boolean[graph.v];
+		boolean stackVertices[] = new boolean[graph.v];
 
 		boolean isCycle = dfsRecursiveCycle(graph, startVertex,
 				visitedVertices, stackVertices);
@@ -33,7 +33,7 @@ public class DFSGraphCycle {
 
 		// Check all the adjacent vertices for the current node and try to
 		// visit them if they are not already visited.
-		Iterator<Integer> adjVerticesIterator = graph.getAdj()[currentVertex]
+		Iterator<Integer> adjVerticesIterator = graph.adj.get(currentVertex)
 				.listIterator();
 		while (adjVerticesIterator.hasNext()) {
 			int nextVertex = adjVerticesIterator.next();

@@ -1,11 +1,11 @@
-package graphsandtrees.trees.btree;
+package trees.btree;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import graphsandtrees.trees.TreeNode;
+import trees.TreeNode;
 
 public class BTree<T> {
 	public TreeNode<T> root;

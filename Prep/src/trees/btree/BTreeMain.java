@@ -1,14 +1,14 @@
 /**
  * 
  */
-package graphsandtrees.trees.btree;
+package trees.btree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import graphsandtrees.trees.TreeNode;
-import graphsandtrees.trees.TreeTraversal;
+import trees.TreeNode;
+import trees.TreeTraversal;
 
 /**
  * @author kolge

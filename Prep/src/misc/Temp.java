@@ -1,4 +1,5 @@
 package misc;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,7 +102,19 @@ public class Temp {
 		}
 	}
 
+	Integer val = 10;
+
+	public void changeit(Integer v) {
+		v = 15;
+	}
+
 	public static void main(String[] args) {
+
+		Temp t = new Temp();
+		System.out.println("val: " + t.val);
+		t.changeit(t.val);
+		System.out.println("val: " + t.val);
+
 		System.out.println("getPascalVal: " + getPascalVal(21, 1));
 
 		if (true) {

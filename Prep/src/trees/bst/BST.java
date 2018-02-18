@@ -1,11 +1,11 @@
 /**
  * 
  */
-package graphsandtrees.trees.bst;
-
-import graphsandtrees.trees.TreeNode;
+package trees.bst;
 
 import java.util.List;
+
+import trees.TreeNode;
 
 /**
  * @author kolge
@@ -84,18 +84,25 @@ public class BST<T> {
 	 * @param data
 	 * @return
 	 */
-	public TreeNode<T> insert(TreeNode<T> root, T data) {
+	private TreeNode<T> insertNode(TreeNode<T> root, T data) {
 		if (root == null) {
 			root = new TreeNode<>(data);
+			System.out.println("Insert: " + data);
 		} else {
 			if (root.greaterThan(data)) {
-				root.left = insert(root.left, data);
+				root.left = insertNode(root.left, data);
 			} else {
-				root.right = insert(root.right, data);
+				root.right = insertNode(root.right, data);
 			}
+
+			root = balanceTree(root);
 		}
 
 		return root;
+	}
+
+	public void insert(T data) {
+		this.root = insertNode(this.root, data);
 	}
 
 	/**
@@ -236,7 +243,7 @@ public class BST<T> {
 	 * @return
 	 */
 	public TreeNode<T> findKthSmallest(TreeNode<T> root, Integer k,
-			Integer counter) {
+			List<T> counter) {
 		if (root == null) {
 			return null;
 		} else {
@@ -245,7 +252,11 @@ public class BST<T> {
 			node = findKthSmallest(root.left, k, counter);
 			if (node != null) {
 				return node;
-			} else if (k == counter + 1) {
+			}
+
+			counter.add(root.key);
+
+			if (counter.size() == k) {
 				return root;
 			} else {
 				node = findKthSmallest(root.right, k, counter);
@@ -255,6 +266,112 @@ public class BST<T> {
 					return null;
 				}
 			}
+		}
+	}
+
+	/**
+	 * Rotate given node to right.
+	 * 
+	 * @param node
+	 */
+	public TreeNode<T> rotateRight(TreeNode<T> node) {
+		if (node != null) {
+
+			if (node.left != null) {
+				TreeNode<T> left = node.left;
+				TreeNode<T> temp = left.right;
+
+				left.right = node;
+				node.left = temp;
+
+				return left;
+			}
+		}
+
+		return node;
+	}
+
+	/**
+	 * Rotate given node to left.
+	 * 
+	 * @param node
+	 */
+	public TreeNode<T> rotateLeft(TreeNode<T> node) {
+		if (node != null) {
+			if (node.right != null) {
+				TreeNode<T> right = node.right;
+				TreeNode<T> temp = right.left;
+
+				right.left = node;
+				node.right = temp;
+
+				return right;
+			}
+		}
+		return node;
+	}
+
+	public boolean isBalanced(TreeNode<T> root) {
+		if (root == null) {
+			return true;
+		} else {
+			Integer leftHeight = height(root.left);
+			Integer rightHeight = height(root.right);
+
+			return (Math.abs(leftHeight - rightHeight) <= 1)
+					&& isBalanced(root.left) && isBalanced(root.right);
+		}
+	}
+
+	public Integer height(TreeNode<T> root) {
+		if (root == null) {
+			return 0;
+		} else {
+			return 1 + Math.max(height(root.left), height(root.right));
+		}
+	}
+
+	public Integer balanceFactor(TreeNode<T> root) {
+		return (height(root.right) - height(root.left));
+	}
+
+	public TreeNode<T> balanceTree(TreeNode<T> root) {
+		Integer balanceFactor = balanceFactor(root);
+
+		if (balanceFactor < -1 || balanceFactor > 1) {
+			System.out.println("Balancing: " + root);
+		}
+
+		if (balanceFactor < -1) {
+			// Tree is left heavy. Rotate Right.
+			if (balanceFactor(root.left) > 0) {
+				System.out.println("Double Right Rotation");
+				// Trees left subtree is right heavy.
+				root.left = rotateLeft(root.left);
+				root = rotateRight(root);
+			} else {
+				root = rotateRight(root);
+			}
+		} else if (balanceFactor > 1) {
+			// Tree is right heavy. Rotate Left.
+			if (balanceFactor(root.right) < 0) {
+				System.out.println("Double Left Rotation");
+				// Trees right subtree is left heavy.
+				root.right = rotateRight(root.right);
+				root = rotateLeft(root);
+			} else {
+				root = rotateLeft(root);
+			}
+		}
+
+		return root;
+	}
+
+	public void copyNode(TreeNode<T> from, TreeNode<T> to) {
+		if (from != null && to != null) {
+			to.key = from.key;
+			to.left = from.left;
+			to.right = from.right;
 		}
 	}
 

@@ -1,10 +1,11 @@
-package graphsandtrees.trees.bst;
-
-import graphsandtrees.trees.TreeNode;
-import graphsandtrees.trees.TreeTraversal;
+package trees.bst;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+
+import trees.TreeNode;
+import trees.TreeTraversal;
 
 public class BSTMain {
 
@@ -12,6 +13,9 @@ public class BSTMain {
 		BST<Integer> bst = BST.getSampleIntegerBST();
 		TreeTraversal tt = new TreeTraversal();
 		TreeNode<Integer> node;
+
+		// isBalanced ()
+		System.out.println("\nisBalanced: " + bst.isBalanced(bst.root));
 
 		// isInorderBST ()
 		System.out.println("isInorderBST: "
@@ -37,14 +41,14 @@ public class BSTMain {
 				+ ((node != null) ? node.key : " Not found"));
 
 		// insert ()
-		bst.insert(bst.root, 1);
+		bst.insert(1);
 		// findMin ()
 		node = bst.findMin(bst.root);
 		System.out.println("\nMinimum Value after insert: "
 				+ ((node != null) ? node.key : " Not found"));
 
 		// insert ()
-		bst.insert(bst.root, 42);
+		bst.insert(42);
 		// findMin ()
 		node = bst.findMax(bst.root);
 		System.out.println("\nMaximum Value after insert: "
@@ -70,8 +74,39 @@ public class BSTMain {
 		tt.printInorderTraversal(node);
 
 		// findKthSmallest ()
-		node = bst.findKthSmallest(bst.root, 3, 1);
+		node = bst.findKthSmallest(bst.root, 5, new LinkedList<Integer>());
+		System.out.println("\nInorder Traversal: ");
+		tt.printInorderTraversal(bst.root);
 		System.out.println("\nKth Smallest element: "
 				+ ((node != null) ? node.key : " Not found"));
+
+		// rotateRight ()
+		System.out.println("\nLevelorder traversal before rotation: ");
+		tt.printLevelOrderTraversal(bst.root);
+		bst.rotateLeft(bst.find(bst.root, 14));
+		System.out.println("\nLevelorder traversal after rotation: ");
+		tt.printLevelOrderTraversal(bst.root);
+
+		// isBalanced ()
+		System.out.println("\nisBalanced: " + bst.isBalanced(bst.root));
+
+		BST<Integer> newbst = new BST<>();
+		newbst.insert(50);
+		newbst.insert(10);
+		newbst.insert(30);
+		newbst.insert(5);
+		newbst.insert(2);
+		newbst.insert(1);
+		newbst.insert(70);
+		newbst.insert(80);
+		newbst.insert(90);
+		newbst.insert(100);
+		System.out.println("\nnewbst Level order traversal: ");
+		tt.printLevelOrderTraversal(newbst.root);
+
+		// balanceFactor ()
+		System.out.println("\nbalanceFactor: "
+				+ newbst.balanceFactor(newbst.root));
+
 	}
 }

@@ -1,9 +1,9 @@
-package graphsandtrees.trees;
+package trees;
 
 import java.util.LinkedList;
 
-import graphsandtrees.trees.btree.BTree;
 import stacksandqueues.GenericQueue;
+import trees.btree.BTree;
 
 public class TreeTraversal {
 
