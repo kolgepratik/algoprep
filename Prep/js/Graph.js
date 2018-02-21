@@ -167,7 +167,7 @@ class DirectedGraph {
     	st.push(vertex); 
     } 
     
-    mst () {
+    mst () { 
     	var edges = this.e(); 
     	
     	Arrays.sort (edges); 
