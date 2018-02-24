@@ -13,9 +13,9 @@ class Edge {
 	}
 }
 
-class DirectedGraph {
-    constructor (vertices, directed) { 
-		this.directed = (directed === undefined) ? false : directed; 
+class Graph {
+    constructor (vertices, options) { 
+		this.directed = options && options.directed ? true : false; 
 		this.vertices = vertices; 
 		
 		// Adjacency List representation 
@@ -30,30 +30,41 @@ class DirectedGraph {
 		// Adjacency Matrix representation 
 		this.edgesMatrix = []; 
 		for (var i=0; i<vertices; i++) {
-			this.edgesMatrix[i] = []; 
-			for (var j=0; j<vertices; j++) {
-				this.edgesMatrix[i][j] = -1; 
-			}
+			this.edgesMatrix[i] = new Array(vertices); 
+			this.edgesMatrix[i].fill (-1); 
         } 
-    } 
+	}  
     
     addEdge (from, to, weight) {
 		this.adj[from].push(to);  
+		if (!this.directed) {
+			this.adj[to].push(from);  
+		}
+
 		this.edges.push (new Edge(from, to, weight)); 
+		
 		this.edgesMatrix[from][to] = weight === undefined ? 1 : weight; 
-		this.edgesMatrix[to][from] = weight === undefined ? 1 : weight; 
+		if (!this.directed) {
+			this.edgesMatrix[to][from] = weight === undefined ? 1 : weight; 
+		}
     } 
     
     removeEdge (from, to) {
     	var idx = this.adj[from].indexOf(to); 
 		this.adj[from].splice(idx, 1); 
+		if (!this.directed) {
+			idx = this.adj[to].indexOf(from); 
+			this.adj[to].splice(idx, 1); 
+		}
 		
     	this.edges = this.edges.filter (function (e) {
     		return (e.from !== from && e.to !== to); 
 		}); 
 		
 		this.edgesMatrix[from][to] = -1; 
-		this.edgesMatrix[to][from] = -1; 
+		if (!this.directed) {
+			this.edgesMatrix[to][from] = -1; 
+		}
     } 
     
     v () {
@@ -74,8 +85,73 @@ class DirectedGraph {
     
     getAdj (vertex) {
     	return this.adj[vertex]; 
-    } 
-    
+	} 
+	
+	/* Static Methods */ 
+
+	static _new (type, options) {
+		if (type === 'hasCycle') {
+			var dg = new Graph(6, options);
+			dg.addEdge (2, 3);
+			dg.addEdge (3, 1);
+			dg.addEdge (4, 0);
+			dg.addEdge (5, 0);
+			dg.addEdge (5, 2); 
+
+			if (options && options.cycle) {
+				dg.addEdge (1, 5); 
+			} 
+
+			return dg; 
+		} else if (type === 'mst') {
+			var dg = new Graph(9, options); 
+			dg.addEdge (0, 1, 4);
+			dg.addEdge (0, 7, 8);
+			dg.addEdge (1, 2, 8);
+			dg.addEdge (1, 7, 11);
+			dg.addEdge (2, 3, 7);
+			dg.addEdge (2, 5, 4);
+			dg.addEdge (2, 8, 2);
+			dg.addEdge (3, 4, 9);
+			dg.addEdge (3, 8, 14);
+			dg.addEdge (4, 5, 10);
+			dg.addEdge (5, 6, 2);
+			dg.addEdge (6, 7, 1);
+			dg.addEdge (6, 8, 6);
+			dg.addEdge (7, 8, 7); 
+
+			if (options && options.cycle) {
+				dg.addEdge (8, 7, 3); 
+			}
+
+			return dg; 
+		} else if (type === 'bipartite') {
+			var dg; 
+			if (options && options.returnTrue === false) {
+				dg = new Graph(5, options); 
+
+				dg.addEdge (0 ,1);
+				dg.addEdge (1, 2);
+				dg.addEdge (2, 3);
+				dg.addEdge (3, 4);
+				dg.addEdge (4, 0); 
+			} else {
+				dg = new Graph(6, options); 
+
+				dg.addEdge (0 ,1);
+				dg.addEdge (1, 2);
+				dg.addEdge (2, 3);
+				dg.addEdge (3, 4);
+				dg.addEdge (4, 5); 
+				dg.addEdge (5, 0); 
+			}
+			
+			return dg; 
+		} 
+	}    
+	
+	/* Algorithm Implementatios */ 
+
     dfs (vertex) {
     	console.log('dfs: traversal');
     	var visited = []; 
@@ -101,42 +177,43 @@ class DirectedGraph {
     
     dfsCycle () {
     	console.log('dfsCycle: detecting');
-    	var visited = []; 
-    	var st = []; 
-    	for (var i=0; i<this.v(); i++) {
-    		visited.push(false); 
-    		st.push(false); 
-    	} 
+    	var visited = new Array(this.v()).fill (false);  
+		var st = new Array(this.v()).fill (false);   
+		var cnt = new Array(this.v()).fill (0);   
     	
-    	for (var i=0; i<this.v(); i++) {
-    		if (this.dfsCycle_helper (i, visited, st)) {
+    	for (var i=0; i<this.v(); i++) { 
+    		if (this.dfsCycle_helper (i, visited, st, cnt)) { 
     			return true; 
     		} 
-    	}   
+		} 
     	
     	return false; 
     } 
     
-    dfsCycle_helper (vertex, visited, st) {
+    dfsCycle_helper (vertex, visited, st, cnt) {
 		if (visited[vertex] === false) {
 			st[vertex] = true; 
+			cnt[vertex] = st.reduce (function (a, c) { return (c === true) ? a + 1 : a; }, 0);  
 			visited[vertex] = true; 
-			
+
 			var adj = this.getAdj(vertex); 
 			for (var i=0; i<adj.length; i++) { 
 				var nextVertex = adj[i]; 
 				if (visited[nextVertex] === false) {
-					if (this.dfsCycle_helper (nextVertex, visited, st)) {
+					if (this.dfsCycle_helper (nextVertex, visited, st, cnt)) { 
 						return true; 
 					} 
-				} else if (st[nextVertex] === true) {
+				} else if (st[nextVertex] === true) { 
+					console.log ('cycle size: ' + (cnt[vertex] - cnt[nextVertex] + 1));
 					return true; 
 				}
 			} 
 		}
 		
-    	st[vertex] = false; 
-    	return false; 
+		st[vertex] = false; 
+		cnt[vertex] = st.reduce (function (a, c) { return (c === true) ? a + 1 : a; }, 0);  
+		
+		return false; 
     } 
     
     bfs (vertex) {
@@ -454,44 +531,55 @@ class DirectedGraph {
 		for (var i=0; i<vertices; i++) {
 			console.log(dist[i]);
 		}
+	} 
+
+	mColoring (m) {
+		console.log ('mColoring: %s', m); 
+
+		var vertices = this.v(); 
+		var visited = new Array(vertices).fill(false);
+		var color = new Array(vertices).fill('-1'); 
+		
+		color[0] = 0; 
+
+		return this.mColoring_util (1, color, m); 
+	} 
+
+	mColoring_util (vertex, color, m) { 
+		if (vertex === this.v()) {
+			return true; 
+		} else {
+			for (var c=0; c<m; c++) {
+				if (this.mColoring_isSafe (vertex, c, color)) {
+					color[vertex] = c;  
+
+					if (this.mColoring_util (vertex + 1, color, m)) {
+						return true; 
+					} else {
+						color[vertex] = -1; 
+					}
+				} 
+			} 
+
+			return false; 
+		} 
 	}
-    
+
+	mColoring_isSafe (vertex, c, color) {
+		var adj = this.getAdj (vertex); 
+
+		for (var a=0; a<adj.length; a++) {
+			if (color[adj[a]] !== -1 && color[adj[a]] === c) {
+				return false; 
+			}
+		} 
+
+		return true; 
+	} 
+
+	
 } 
 
-var dg = new DirectedGraph(6);
-dg.addEdge (2, 3);
-dg.addEdge (3, 1);
-dg.addEdge (4, 0);
-dg.addEdge (5, 0);
-dg.addEdge (5, 2);
 
-dg.dfs (2); 
-dg.bfs (2);
-dg.topologicalSort(); 
-console.log('dfsCycle: ' + dg.dfsCycle()); 
-console.log('unionFindCycle: ' + dg.unionFindCycle()); 
-
-var dg2 = new DirectedGraph(9); 
-dg2.addEdge (0, 1, 4);
-dg2.addEdge (0, 7, 8);
-dg2.addEdge (1, 2, 8);
-dg2.addEdge (1, 7, 11);
-dg2.addEdge (2, 3, 7);
-dg2.addEdge (2, 5, 4);
-dg2.addEdge (2, 8, 2);
-dg2.addEdge (3, 4, 9);
-dg2.addEdge (3, 8, 14);
-dg2.addEdge (4, 5, 10);
-dg2.addEdge (5, 6, 2);
-dg2.addEdge (6, 7, 1);
-dg2.addEdge (6, 8, 6);
-dg2.addEdge (7, 8, 7); 
-
-dg2.kruskalMST();
-dg2.primMST(); 
-
-console.log('path exists: ' + dg.dfsPathExists (5, 0)); 
-
-dg2.djksShortestPath (0);
-dg2.bellmanFord(0); 
-dg2.flyodWarshall();
+var dg = Graph._new('hasCycle', { directed: true, cycle: false }); 
+console.log ('dfsCycle: ', dg.dfsCycle()); 
