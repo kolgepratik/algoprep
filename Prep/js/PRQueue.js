@@ -5,6 +5,10 @@ class PRQueue {
         this.type = type; 
     } 
 
+    size () {
+        return this.data.length; 
+    }
+
     isValidIdx (index) {
         return index !== undefined && index >=0 && index < this.data.length; 
     }
@@ -190,6 +194,7 @@ class PRQueue {
     }
 } 
 
+/*
 var prq = new PRQueue(); 
 prq.insert(3);
 prq.insert(5);
@@ -201,3 +206,8 @@ prq.convert();
 console.log('%s: %s', prq.type, prq.remove()); 
 prq.convert(); 
 console.log('%s: %s', prq.type, prq.remove()); 
+*/
+
+module.exports = {
+    PRQueue: PRQueue 
+}; 

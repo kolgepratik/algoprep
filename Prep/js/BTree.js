@@ -7,6 +7,10 @@ class BTreeNode {
         this.right = undefined; 
     } 
 
+    valueOf () {
+        return this.data; 
+    }
+
     hasLeft () {
         return this.left ? true : false; 
     } 
@@ -107,6 +111,7 @@ class BTree {
     } 
 } 
 
+/*
 var btnode = new BTreeNode(1);
 btnode.left = new BTreeNode(2);
 btnode.right = new BTreeNode(3);
@@ -120,3 +125,8 @@ bt.preorder();
 bt.inorder();
 bt.postorder(); 
 bt.levelorder(); 
+*/ 
+
+module.exports = {
+    BTree: BTree, BTreeNode: BTreeNode 
+}; 
