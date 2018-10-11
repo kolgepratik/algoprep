@@ -2,7 +2,7 @@
 
 function run (test_case_list, runTest) {
     let settings = {
-        json: { stringify: { space: 1 } }
+        json: { stringify: { space: 0 } }
     };
 
     let test_case_passed_list = [];
@@ -10,9 +10,11 @@ function run (test_case_list, runTest) {
 
     console.log ('');
 
-    console.log (`Running: ${test_case_list.length} test cases ...\n\n`);
+    console.log (`Running: ${test_case_list.length} Test cases ...\n\n`);
 
     for (const test_case of test_case_list) {
+        console.log (`Running Test Case ...`);
+
         test_case.actual = runTest (test_case.params);
 
         if (test_case.expected === test_case.actual) {
@@ -21,6 +23,8 @@ function run (test_case_list, runTest) {
             test_case_failed_list.push (test_case);
         }
     }
+
+    console.log ('\n');
 
     if (test_case_passed_list.length > 0) {
         console.log (`----- Passed: ${test_case_passed_list.length} of ${test_case_list.length} -----`);
@@ -37,7 +41,7 @@ function run (test_case_list, runTest) {
     if (test_case_failed_list.length > 0) {
         console.error (`----- Failed: ${test_case_failed_list.length} of ${test_case_list.length} -----`);
         for (const test_case_failed of test_case_failed_list) {
-            console.error (`\nPassed: ${test_case_failed.name}`);
+            console.error (`\nFailed: ${test_case_failed.name}`);
             console.error (`Params: ${JSON.stringify(test_case_failed.params, undefined, settings.json.stringify.space)}`);
             console.error (`Expected: ${test_case_failed.expected}. Actual: ${test_case_failed.actual}`);
         }
