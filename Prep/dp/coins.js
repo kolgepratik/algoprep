@@ -21,7 +21,7 @@ function coins (coins_dp, coinList, sum, n) {
 
         /* 
         * When you are not allowed to repeat the coins, you must move to the next coin. 
-        * i.e. coins (coinList, <n-1>, sum - coinList[n]) 
+        * i.e. coins (coinList, <n-1>, sum - coinList[n]) + coins (coins_dp, coinList, sum, n-1) 
         */
         result = 
             coins (coins_dp, coinList, sum - coinList[n - 1], n) 
