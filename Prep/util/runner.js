@@ -8,12 +8,12 @@ function run (test_case_list, runTest) {
     let test_case_passed_list = [];
     let test_case_failed_list = [];
 
-    console.log ('');
+    console.log ('\n===== Starting =====\n');
 
-    console.log (`Running: ${test_case_list.length} Test cases ...\n\n`);
+    console.log (`Running: ${test_case_list.length} Test cases ...`);
 
     for (const test_case of test_case_list) {
-        console.log (`Running Test Case ...`);
+        console.log (`\nRunning Test Case ...`);
 
         test_case.actual = runTest (test_case.params);
 
@@ -47,9 +47,7 @@ function run (test_case_list, runTest) {
         }
     }
 
-    console.log (`\n\nCompleted ...`);
-
-    console.log ('');
+    console.log (`\n===== Completed =====\n`);
 }
 
 module.exports = {
