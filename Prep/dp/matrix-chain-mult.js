@@ -5,7 +5,7 @@ var array = require ('../util/array');
 function mcm (mcm_dp, i, j, dimensions_array) {
     console.log (`mcm: i=${i}, j=${j}`);
     let return_value = undefined;
-    
+
     if (i === j) {
         console.log (`return 0 [when (i === j)]`);
         return_value = 0;
@@ -57,9 +57,9 @@ function mcm (mcm_dp, i, j, dimensions_array) {
 }
 
 let test_case_list = [
-    { name: '', params: { dimensions_array: [ 40, 20, 30, 10, 30 ], n: 5 }, expected: 26000 },
-    { name: '', params: { dimensions_array: [ 10, 20, 30, 40, 30 ], n: 5 }, expected: 30000 },
-    { name: '', params: { dimensions_array: [ 10, 20, 30 ], n: 3 }, expected: 6000 }
+    { name: '', params: { dimensions_array: [ 40, 20, 30, 10, 30 ], n: 4 }, expected: 26000 },
+    { name: '', params: { dimensions_array: [ 10, 20, 30, 40, 30 ], n: 4 }, expected: 30000 },
+    { name: '', params: { dimensions_array: [ 10, 20, 30 ], n: 2 }, expected: 6000 }
 ];
 
 runner.run (test_case_list, function (runnerParams) {
@@ -73,7 +73,7 @@ runner.run (test_case_list, function (runnerParams) {
         }
     });
 
-    mcm (mcm_dp, 1, runnerParams.n - 1, runnerParams.dimensions_array);
+    mcm (mcm_dp, 1, runnerParams.n, runnerParams.dimensions_array);
 
-    return mcm_dp[1][runnerParams.n -1];
+    return mcm_dp[1][runnerParams.n];
 });
