@@ -2,7 +2,6 @@ var runner = require ('../util/runner');
 var array = require ('../util/array');
 
 function lsp (lsp_dp, i, j, string_array) {
-
     if (lsp_dp[i][j] !== undefined) {
         console.log (`return previously computed value for ( ${i}, ${j} )`);
         
@@ -28,9 +27,8 @@ function lsp (lsp_dp, i, j, string_array) {
         lsp_dp [i][j] = return_value;
         
         return return_value;
+    }
 }
-}
-
 
 let test_case_list = [
     { name: '', params: { string_array: [ 'a', 'b', 'c', 'd', 'a', 'b' ] }, expected: 3 },
