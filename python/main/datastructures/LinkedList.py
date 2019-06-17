@@ -1,16 +1,44 @@
+from typing import Optional
+
+
 class LinkedListNode:
     def __init__(self, data):
         self.data = data
         self.next = None
 
-    def str(self):
-        print("Node: {}".format(self.data))
+    def __str__(self) -> str:
+        return "Node: {}".format(self.data)
 
 
 class LinkedList:
     def __init__(self):
         self.head = None
 
+    def __str__(self) -> str:
+        if self.head is not None:
+            str_list = list()
+            str_list.append("> LinkedList size: {}".format(self.size()))
+
+            current = self.head
+            while current is not None:
+                str_list.append(current.__str__())
+                current = current.next
+
+            return "\n".join(str_list)
+
+        return ""
+
+    def size(self) -> int:
+        sz = 0
+
+        current = self.head
+        while current is not None:
+            current = current.next
+            sz += 1
+
+        return sz
+
+    # Add
     def append(self, data):
         print("append: {}".format(data))
         node = LinkedListNode(data)
@@ -55,6 +83,7 @@ class LinkedList:
                 prev.next = node
                 node.next = current
 
+    # Reverse
     def reverse(self):
         print("reverse:")
 
@@ -95,6 +124,7 @@ class LinkedList:
 
         return new_head
 
+    # Access
     def get_last_node(self):
         print("get_last_node:")
 
@@ -131,21 +161,46 @@ class LinkedList:
         print("get_first_node:")
         return self.head
 
-    def size(self):
-        sz = 0
+    # Clear
+    def clear(self):
+        print("clear:")
+        self.head = None
 
-        current = self.head
-        while current is not None:
-            current = current.next
-            sz += 1
+    # Find
+    def find_node_with_data(self, data: int) -> Optional[LinkedListNode]:
+        print("find_node_with_data: {}".format(data))
 
-        return sz
-
-    def str(self):
         if self.head is not None:
-            print("> LinkedList size: {}".format(self.size()))
+            current_node = self.head
 
-            current = self.head
-            while current is not None:
-                current.str()
-                current = current.next
+            while current_node is not None:
+                if current_node.data == data:
+                    return current_node
+
+                current_node = current_node.next
+
+        return None
+
+    # Cyclic
+    def find_cycle_start_node(self) -> Optional[LinkedListNode]:
+        print("find_cycle_start_node:")
+
+        if self.head is not None:
+            ptr_slow = self.head
+            ptr_fast = self.head
+
+            while ptr_slow is not None and ptr_fast is not None and ptr_fast.next is not None:
+                ptr_slow = ptr_slow.next
+                ptr_fast = ptr_fast.next.next
+
+                if ptr_slow is ptr_fast:
+                    # Found cycle. Now find its start.
+                    ptr_head = self.head
+
+                    while ptr_head is not ptr_slow:
+                        ptr_head = ptr_head.next
+                        ptr_slow = ptr_slow.next
+
+                    return ptr_slow
+
+        return None
