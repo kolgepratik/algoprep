@@ -15,7 +15,19 @@ class LinkedListTest(unittest.TestCase):
         self.linked_list.append(3)
         self.linked_list.append(4)
 
-        print(self.linked_list)
+        self.assertEqual(4, self.linked_list.size())
+
+    def test_size(self):
+        # Act
+        size = self.linked_list.size()
+
+        self.assertEqual(4, size)
+
+    def test_size_recursive(self):
+        # Act
+        size = self.linked_list.size_recursive()
+
+        self.assertEqual(4, size)
 
     def test_append(self):
         self.linked_list.clear()
@@ -93,6 +105,39 @@ class LinkedListTest(unittest.TestCase):
 
         self.assertIsNone(not_found)
 
+    def test_find_node_with_data_recursive(self):
+        found = self.linked_list.find_node_with_data_recursive(2)
+        not_found = self.linked_list.find_node_with_data_recursive(999)
+
+        self.assertIsNotNone(found)
+        self.assertEqual(2, found.data)
+
+        self.assertIsNone(not_found)
+
+    def test_find_node_at_index(self):
+        # Act
+        at_2 = self.linked_list.find_node_at_index(2)
+        at_999 = self.linked_list.find_node_at_index(999)
+
+        self.assertIsNotNone(at_2)
+        self.assertEqual(2, at_2.data)
+
+        self.assertIsNone(at_999)
+
+    def test_find_nth_node_from_end(self):
+        # Act
+        first_from_last = self.linked_list.find_nth_node_from_end(1)
+        third_from_last = self.linked_list.find_nth_node_from_end(3)
+        tenth_from_last = self.linked_list.find_nth_node_from_end(10)
+
+        self.assertIsNotNone(first_from_last)
+        self.assertEqual(4, first_from_last.data)
+
+        self.assertIsNotNone(third_from_last)
+        self.assertEqual(2, third_from_last.data)
+
+        self.assertIsNone(tenth_from_last)
+
     def test_is_cyclic(self):
         print("test_is_cyclic")
 
@@ -113,3 +158,21 @@ class LinkedListTest(unittest.TestCase):
 
         self.assertIsNotNone(cycle_start_node)
         self.assertEqual(2, cycle_start_node.data)
+
+    def test_clear(self):
+        self.assertIsNotNone(self.linked_list.head)
+
+        # Act
+        self.linked_list.clear()
+
+        self.assertIsNone(self.linked_list.head)
+
+    def test_delete_node_with_data(self):
+        self.assertEqual(4, self.linked_list.size())
+        self.assertIsNotNone(self.linked_list.find_node_with_data(3))
+
+        # Act
+        self.linked_list.delete_node_with_data(3)
+
+        self.assertEqual(3, self.linked_list.size())
+        self.assertIsNone(self.linked_list.find_node_with_data(3))

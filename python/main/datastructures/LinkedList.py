@@ -38,6 +38,19 @@ class LinkedList:
 
         return sz
 
+    def size_recursive(self) -> int:
+        print("size_recursive:")
+
+        return self.size_recursive_helper(self.head)
+
+    def size_recursive_helper(self, current_node) -> int:
+        print("size_recursive_helper: {}".format(current_node))
+
+        if current_node is None:
+            return 0
+
+        return 1 + self.size_recursive_helper(current_node.next)
+
     # Add
     def append(self, data):
         print("append: {}".format(data))
@@ -60,8 +73,8 @@ class LinkedList:
         node.next = self.head
         self.head = node
 
-    def add_at(self, index, data):
-        print("add_at {}: {}".format(index, data))
+    def add_at_index(self, index, data):
+        print("add_at_index {}: {}".format(index, data))
         if self is not None:
             if index == 1:
                 self.prepend(data)
@@ -161,10 +174,24 @@ class LinkedList:
         print("get_first_node:")
         return self.head
 
-    # Clear
+    # Delete
     def clear(self):
         print("clear:")
         self.head = None
+
+    def delete_node_with_data(self, data):
+        print("delete_node_with_data: {}".format(data))
+
+        if self.head is not None:
+            current = self.head
+            prev = current
+
+            while current is not None and current.data != data:
+                prev = current
+                current = current.next
+
+            if current is not None:
+                prev.next = current.next
 
     # Find
     def find_node_with_data(self, data: int) -> Optional[LinkedListNode]:
@@ -178,6 +205,55 @@ class LinkedList:
                     return current_node
 
                 current_node = current_node.next
+
+        return None
+
+    def find_node_with_data_recursive(self, data: int) -> Optional[LinkedListNode]:
+        print("find_node_with_data_recursive: {}".format(data))
+
+        if self.head is not None:
+            return self.find_node_with_data_recursive_helper(self.head, data)
+
+        return None
+
+    def find_node_with_data_recursive_helper(self, current_node, data: int) -> Optional[LinkedListNode]:
+        print("find_node_with_data_recursive_helper: {} {}".format(current_node, data))
+
+        if current_node is not None:
+            if current_node.data == data:
+                return current_node
+            else:
+                return self.find_node_with_data_recursive_helper(current_node.next, data)
+
+        return None
+
+    def find_node_at_index(self, index: int) -> Optional[LinkedListNode]:
+        print("find_node_at_index: {}".format(index))
+
+        if self.head is not None:
+            current_index = 1
+            current_node = self.head
+
+            while current_node is not None and current_index != index:
+                current_index += 1
+                current_node = current_node.next
+
+            return current_node
+
+        return None
+
+    def find_nth_node_from_end(self, n) -> Optional[LinkedListNode]:
+        print("find_nth_node_from_end: {}".format(n))
+
+        if self.head is not None:
+            current_node = self.head
+            remaining_size = self.size()
+
+            while current_node is not None and remaining_size != n:
+                current_node = current_node.next
+                remaining_size -= 1
+
+            return current_node
 
         return None
 
