@@ -138,6 +138,20 @@ class LinkedListTest(unittest.TestCase):
 
         self.assertIsNone(tenth_from_last)
 
+    def test_find_nth_node_from_end_optimized(self):
+        # Act
+        first_from_last = self.linked_list.find_nth_node_from_end_optimized(1)
+        third_from_last = self.linked_list.find_nth_node_from_end_optimized(3)
+        tenth_from_last = self.linked_list.find_nth_node_from_end_optimized(10)
+
+        self.assertIsNotNone(first_from_last)
+        self.assertEqual(4, first_from_last.data)
+
+        self.assertIsNotNone(third_from_last)
+        self.assertEqual(2, third_from_last.data)
+
+        self.assertIsNone(tenth_from_last)
+
     def test_is_cyclic(self):
         print("test_is_cyclic")
 

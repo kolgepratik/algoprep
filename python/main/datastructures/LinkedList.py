@@ -257,6 +257,28 @@ class LinkedList:
 
         return None
 
+    def find_nth_node_from_end_optimized(self, n) -> Optional[LinkedListNode]:
+        print("find_nth_node_from_end_optimized: {}".format(n))
+
+        if self.head is not None:
+            nth_node_from_end_counter = 0
+            nth_node_from_end = None
+            current_node = self.head
+
+            while current_node is not None:
+                current_node = current_node.next
+                nth_node_from_end_counter += 1
+
+                if nth_node_from_end_counter == n:
+                    nth_node_from_end = self.head
+
+                if nth_node_from_end_counter > n:
+                    nth_node_from_end = nth_node_from_end.next
+
+            return nth_node_from_end
+
+        return None
+
     # Cyclic
     def find_cycle_start_node(self) -> Optional[LinkedListNode]:
         print("find_cycle_start_node:")
