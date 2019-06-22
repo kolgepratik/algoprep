@@ -152,9 +152,39 @@ class LinkedListTest(unittest.TestCase):
 
         self.assertIsNone(tenth_from_last)
 
-    def test_is_cyclic(self):
-        print("test_is_cyclic")
+    def test_find_middle_node_odd(self):
+        self.linked_list.append(5)
+        self.assertEqual(5, self.linked_list.size())
 
+        # Act
+        middle_node = self.linked_list.get_middle_node()
+
+        self.assertIsNotNone(middle_node)
+        self.assertEqual(3, middle_node.data)
+
+    def test_find_middle_node_even(self):
+        # Act
+        middle_node = self.linked_list.get_middle_node()
+
+        self.assertIsNotNone(middle_node)
+        self.assertEqual(3, middle_node.data)
+
+    def test_is_list_size_even_true(self):
+        # Act
+        is_even = self.linked_list.is_size_even()
+
+        self.assertEqual(True, is_even)
+
+    def test_is_list_size_even_false(self):
+        self.linked_list.append(5)
+        self.assertEqual(5, self.linked_list.size())
+
+        # Act
+        is_even = self.linked_list.is_size_even()
+
+        self.assertEqual(False, is_even)
+
+    def test_is_cyclic(self):
         self.assertEqual(4, self.linked_list.size())
 
         found_2 = self.linked_list.find_node_with_data(2)
@@ -190,3 +220,9 @@ class LinkedListTest(unittest.TestCase):
 
         self.assertEqual(3, self.linked_list.size())
         self.assertIsNone(self.linked_list.find_node_with_data(3))
+
+    def test_swap_nodes(self):
+        # Act
+        self.linked_list.swap_nodes(2, 3)
+
+        print(self.linked_list)

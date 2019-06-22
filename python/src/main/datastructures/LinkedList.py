@@ -39,21 +39,32 @@ class LinkedList:
         return sz
 
     def size_recursive(self) -> int:
-        print("size_recursive:")
-
         return self.size_recursive_helper(self.head)
 
     def size_recursive_helper(self, current_node) -> int:
-        print("size_recursive_helper: {}".format(current_node))
-
         if current_node is None:
             return 0
 
         return 1 + self.size_recursive_helper(current_node.next)
 
+    def is_size_even(self) -> bool:
+        if self.head is not None:
+            slow_node_ptr = self.head
+            fast_node_ptr = self.head
+
+            while fast_node_ptr is not None:
+                if fast_node_ptr.next is None:
+                    return False
+                
+                slow_node_ptr = slow_node_ptr.next
+                fast_node_ptr = fast_node_ptr.next.next
+
+            return True
+
+        return False
+
     # Add
     def append(self, data):
-        print("append: {}".format(data))
         node = LinkedListNode(data)
 
         if self.head is None:
@@ -67,14 +78,12 @@ class LinkedList:
         current.next = node
 
     def prepend(self, data):
-        print("prepend: {}".format(data))
         node = LinkedListNode(data)
 
         node.next = self.head
         self.head = node
 
     def add_at_index(self, index, data):
-        print("add_at_index {}: {}".format(index, data))
         if self is not None:
             if index == 1:
                 self.prepend(data)
@@ -98,8 +107,6 @@ class LinkedList:
 
     # Reverse
     def reverse(self):
-        print("reverse:")
-
         if self.head is not None:
             prev = self.head
             current = prev.next
@@ -118,16 +125,12 @@ class LinkedList:
             self.head = prev
 
     def reverse_recursive(self):
-        print("reverse_recursive:")
-
         if self.head is not None:
             old_head = self.head
             self.head = self.reverse_recursive_helper(self.head)
             old_head.next = None
 
     def reverse_recursive_helper(self, current_head):
-        print("reverse_recursive_helper: {}".format(current_head.data))
-
         if current_head.next is None:
             return current_head
 
@@ -139,8 +142,6 @@ class LinkedList:
 
     # Access
     def get_last_node(self):
-        print("get_last_node:")
-
         if self.head is None:
             return None
 
@@ -148,40 +149,44 @@ class LinkedList:
         while current.next is not None:
             current = current.next
 
-        print("Last Node: {}".format(current.data))
         return current
 
     def get_last_node_recursive(self):
-        print("get_last_node_recursive:")
-
         if self.head is None:
             return None
 
         last = self.get_last_helper_recursive(self.head)
-        print("Last Node: {}".format(last.data))
 
         return last
 
     def get_last_helper_recursive(self, current_head):
-        print("get_last_helper_recursive: {}".format(current_head.data))
-
         if current_head.next is None:
             return current_head
 
         return self.get_last_helper_recursive(current_head.next)
 
     def get_first_node(self):
-        print("get_first_node:")
         return self.head
+
+    def get_middle_node(self):
+        if self.head is not None:
+            slow_node_ptr = self.head
+            fast_node_ptr = self.head
+
+            while fast_node_ptr is not None and fast_node_ptr.next is not None:
+                slow_node_ptr = slow_node_ptr.next
+                fast_node_ptr = fast_node_ptr.next.next
+
+            return slow_node_ptr
+
+        return None
+
 
     # Delete
     def clear(self):
-        print("clear:")
         self.head = None
 
     def delete_node_with_data(self, data):
-        print("delete_node_with_data: {}".format(data))
-
         if self.head is not None:
             current = self.head
             prev = current
@@ -195,8 +200,6 @@ class LinkedList:
 
     # Find
     def find_node_with_data(self, data: int) -> Optional[LinkedListNode]:
-        print("find_node_with_data: {}".format(data))
-
         if self.head is not None:
             current_node = self.head
 
@@ -209,16 +212,12 @@ class LinkedList:
         return None
 
     def find_node_with_data_recursive(self, data: int) -> Optional[LinkedListNode]:
-        print("find_node_with_data_recursive: {}".format(data))
-
         if self.head is not None:
             return self.find_node_with_data_recursive_helper(self.head, data)
 
         return None
 
     def find_node_with_data_recursive_helper(self, current_node, data: int) -> Optional[LinkedListNode]:
-        print("find_node_with_data_recursive_helper: {} {}".format(current_node, data))
-
         if current_node is not None:
             if current_node.data == data:
                 return current_node
@@ -228,8 +227,6 @@ class LinkedList:
         return None
 
     def find_node_at_index(self, index: int) -> Optional[LinkedListNode]:
-        print("find_node_at_index: {}".format(index))
-
         if self.head is not None:
             current_index = 1
             current_node = self.head
@@ -243,8 +240,6 @@ class LinkedList:
         return None
 
     def find_nth_node_from_end(self, n) -> Optional[LinkedListNode]:
-        print("find_nth_node_from_end: {}".format(n))
-
         if self.head is not None:
             current_node = self.head
             remaining_size = self.size()
@@ -258,8 +253,6 @@ class LinkedList:
         return None
 
     def find_nth_node_from_end_optimized(self, n) -> Optional[LinkedListNode]:
-        print("find_nth_node_from_end_optimized: {}".format(n))
-
         if self.head is not None:
             nth_node_from_end_counter = 0
             nth_node_from_end = None
@@ -281,8 +274,6 @@ class LinkedList:
 
     # Cyclic
     def find_cycle_start_node(self) -> Optional[LinkedListNode]:
-        print("find_cycle_start_node:")
-
         if self.head is not None:
             ptr_slow = self.head
             ptr_fast = self.head
@@ -302,3 +293,33 @@ class LinkedList:
                     return ptr_slow
 
         return None
+
+    # Swap nodes
+    def swap_nodes(self, first_node_data, other_node_data): 
+        if self.head is not None:
+            current_node = self.head.next
+            first_node_prev = None
+            other_node_prev = None
+
+            while current_node.next is not None:
+                if current_node.next.data == first_node_data:
+                    first_node_prev = current_node
+                
+                if current_node.next.data == other_node_data:
+                    other_node_prev = current_node
+
+                current_node = current_node.next
+
+            if self.head.data == first_node_data:
+                if other_node_prev is not None:
+                    temp_node = self.head
+                    self.head = other_node_prev.next
+                    other_node_prev.next = self.head
+
+            if first_node_prev is not None and other_node_prev is not None:
+                temp_node = first_node_prev
+                first_node_prev.next = other_node_prev.next
+                other_node_prev.next = temp_node.next
+
+
+                
