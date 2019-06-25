@@ -1,16 +1,7 @@
-package datastructures;
+package com.kp.study.algorithms.datastructures;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import testutil.TestCase;
-import testutil.TestCaseResult;
-import testutil.TestCaseRunner;
 
 class LLNode {
     int data;
@@ -78,26 +69,5 @@ public class LinkedList {
             return nodePointer;
 
         return this.getLastHelper(nodePointer.next);
-    }
-}
-
-class LinkedListTest {
-
-    private void addToList(LinkedList linkedList, int first, int last) {
-        Stream.iterate(first, integer -> integer + 1).limit(last).forEach(linkedList::append);
-    }
-
-    private void testLengthRecursive() {
-        LinkedList list = new LinkedList();
-
-        addToList(list, 1, 5);
-
-        int length = list.lengthRecursive();
-        System.out.println("length: " + length);
-    }
-
-    public static void main(String[] args) {
-        LinkedListTest test = new LinkedListTest();
-        test.testLengthRecursive();
     }
 }
