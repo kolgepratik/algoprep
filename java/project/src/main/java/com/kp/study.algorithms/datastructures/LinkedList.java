@@ -3,28 +3,28 @@ package com.kp.study.algorithms.datastructures;
 import java.util.ArrayList;
 import java.util.List;
 
-class LLNode {
+class LinkedListNode {
     int data;
 
-    LLNode next;
+    LinkedListNode next;
 
-    public LLNode(int data) {
+    public LinkedListNode(int data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "LLNode {" + "data=" + data + ", next=" + ((next == null) ? next : next.data) + '}';
+        return "LinkedListNode {" + "data=" + data + ", next=" + ((next == null) ? next : next.data) + '}';
     }
 }
 
 public class LinkedList {
-    LLNode head;
+    LinkedListNode head;
 
-    List<LLNode> getAll() {
-        List<LLNode> allNodes = new ArrayList<>();
+    List<LinkedListNode> getAll() {
+        List<LinkedListNode> allNodes = new ArrayList<>();
 
-        LLNode nodePointer = this.head;
+        LinkedListNode nodePointer = this.head;
         while (nodePointer != null) {
             allNodes.add(nodePointer);
             nodePointer = nodePointer.next;
@@ -34,37 +34,37 @@ public class LinkedList {
     }
 
     void append(int data) {
-        LLNode newNode = new LLNode(data);
+        LinkedListNode newNode = new LinkedListNode(data);
 
         if (this.head == null) {
             this.head = newNode;
             return;
         }
 
-        LLNode nodePointer = this.head;
+        LinkedListNode nodePointer = this.head;
         while (nodePointer.next != null)
             nodePointer = nodePointer.next;
 
         nodePointer.next = newNode;
     }
 
-    int lengthRecursive() {
-        return this.lengthRecursiveHelper(this.head);
+    int sizeRecursive() {
+        return this.sizeRecursiveHelper(this.head);
     }
 
-    private int lengthRecursiveHelper(LLNode currentNode) {
+    private int sizeRecursiveHelper(LinkedListNode currentNode) {
         if (currentNode == null) {
             return 0;
         }
 
-        return 1 + this.lengthRecursiveHelper(currentNode.next);
+        return 1 + this.sizeRecursiveHelper(currentNode.next);
     }
 
-    LLNode getLast() {
+    LinkedListNode getLast() {
         return this.getLastHelper(this.head);
     }
 
-    private LLNode getLastHelper(LLNode nodePointer) {
+    private LinkedListNode getLastHelper(LinkedListNode nodePointer) {
         if (nodePointer == null || nodePointer.next == null)
             return nodePointer;
 
