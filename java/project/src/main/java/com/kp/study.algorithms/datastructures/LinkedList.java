@@ -50,19 +50,19 @@ public class LinkedList {
     }
 
     int sizeRecursive() {
-        return this.sizeRecursiveHelper(this.head);
+        return this.sizeRecursive_helper(this.head);
     }
 
-    private int sizeRecursiveHelper(LinkedListNode currentNode) {
+    private int sizeRecursive_helper(LinkedListNode currentNode) {
         if (currentNode == null) {
             return 0;
         }
 
-        return 1 + this.sizeRecursiveHelper(currentNode.next);
+        return 1 + this.sizeRecursive_helper(currentNode.next);
     }
 
     LinkedListNode getLastNode() {
-        return this.getLastHelper(this.head);
+        return this.getLast_helper(this.head);
     }
 
     LinkedListNode getNodeAtPosition(int index) {
@@ -74,11 +74,11 @@ public class LinkedList {
         return nodePointer;
     }
 
-    private LinkedListNode getLastHelper(LinkedListNode nodePointer) {
+    private LinkedListNode getLast_helper(LinkedListNode nodePointer) {
         if (nodePointer == null || nodePointer.next == null)
             return nodePointer;
 
-        return this.getLastHelper(nodePointer.next);
+        return this.getLast_helper(nodePointer.next);
     }
 
     void swapNodes(int firstNodeData, int secondNodeData) {
@@ -161,6 +161,33 @@ public class LinkedList {
 
                 System.out.println("List After swapping: " + this);
             }
+        }
+    }
+
+    public void swapPairwiseRecursive() {
+        if (this.head != null) {
+            LinkedListNode first = this.head;
+            LinkedListNode second = first.next;
+
+            if (second != null) {
+                this.head = second;
+                first.next = second.next;
+                second.next = first;
+
+                swapPairwiseRecursive_helper(first, first.next);
+            }
+        }
+    }
+
+    private void swapPairwiseRecursive_helper(LinkedListNode prev, LinkedListNode current) {
+        if(current != null && current.next != null) {
+            LinkedListNode next = current.next;
+
+            prev.next = next;
+            current.next = next.next;
+            next.next = current;
+
+            swapPairwiseRecursive_helper(current, current.next);
         }
     }
 
